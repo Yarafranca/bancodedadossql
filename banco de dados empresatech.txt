@@ -1,0 +1,97 @@
+/*1) Criar o banco de dados EmpresaTech*/
+
+CREATE TABLE empresatech
+
+/*2) Criar as tabelas, conforme esquema:*/
+CREATE TABLE Funcionario(
+	CodFunc int primary key,
+	CPF varchar (15) unique not null,
+	PrimeiroNome  varchar (30) not null,
+	UltimoNome varchar (30) not null,
+	Data_nasc date,
+	Endereço varchar (80) not null,
+	CEP varchar (10) not null,
+	Cidade varchar (30) not null,
+	Fone bigint not null,
+	CodDepartamento int,
+	Funcao varchar (30),
+	Salario float
+);
+
+CREATE TABLE Departamento(
+	CodDepart int,
+	Nome varchar (30) not null,
+	CodFuncionarioGerente int,
+	constraint CHAVEPDepartameto primary key (CodDepart)
+);
+
+CREATE TABLE Dependentes(
+	CPF varchar (15) unique not null,
+	Nome varchar (30) not null,
+	CodFuncionario int,
+	constraint CHAVEPDependentes primary key (CodFuncionario)
+);
+
+CREATE TABLE Fornecedor(
+	CodForn varchar (15) unique not null,
+	Nome varchar (30) not null,
+	Endereço varchar (80) not null,
+	constraint CHAVEPFornecedor primary key (CodForn)
+);
+
+/*3) Na tabela Funcionarios exclua a coluna CEP. Em seguida renomear a coluna DataNasci para data_nasc.*/
+
+ALTER TABlE Funcionario DROP COLUMN CEP;
+
+/*4) Exclua a tabela Fornecedor.*/
+
+DROP TABLE Fornecedor;
+
+/*5) Inclua 6 registros para funcionários, 3 para departamentos e 2 para dependentes.*/
+
+INSERT INTO Funcionario (CodFunc, CPF, PrimeiroNome, UltimoNome, Data_nasc, Endereço, Cidade, Fone, CodDepartamento, Funcao, Salario) 
+VALUES 
+(1,'69322311580', 'João', 'Santos', '23/07/1980', 'Rua das Flores, 100 - Aldeota', 'Fortaleza', 85906321552, 100, 'Gerente', 15000),
+(2,'33256574891', 'Maria', 'Silva', '24/05/1999', 'Av. Paulista, 650 - Jardins', 'São Paulo', 11955364335, 200, 'Supervisora', 11000),
+(3,'45462558621', 'Karla', 'Veras', '11/05/1889', 'Rua das Pontes, 236 - Grande Tijuca', 'Rio de Janeiro', 22956696608, 123, 'DBA', 5000),
+(4,'69355874125', 'Andreia', 'Oliveira', '05/05/1998', 'Av. Barão de Studart, 450 - ', 'Fortaleza', 85963630211, 564, 'Programadora', 1000),
+(5,'36985214778', 'Paulo', 'Pereira', '11/02/1998', 'Rua 13 de Maio, 154 - Bela Vista', 'São Paulo', 11988061857, 852, 'Programador', 1000),
+(6,'75395148622', 'David', 'Maciel', '26/12/2000', 'Rua das Pontes, 230 - Grande Tijuca',  'Rio de Janeiro', 22912168803, 357, 'Estagiario', 800)
+
+INSERT INTO Departamento (CodDepart, Nome, CodFuncionarioGerente)
+VALUES 
+(1001,'Desenvolvimento', 564),
+(1002,'Administração', 100),
+(1003,'Redes', 200)
+
+INSERT INTO Dependentes (CPF, Nome, CodFuncionario) 
+VALUES 
+('89382552391', 'Juliana França', 357),
+('05801818391', 'Hermano Farias', 852)
+
+/*6) Listar todos os funcionários da empresa. Em seguida todos os departamentos e dependentes.*/
+SELECT * FROM Funcionario, Departamento, Dependentes
+
+/*7) Listar o nome e sobrenome dos funcionários ordenado por sobrenome.*/
+
+SELECT UltimoNome, PrimeiroNome 
+FROM Funcionario
+ORDER BY UltimoNome
+
+/*8) Listar todos os campos de funcionários ordenados por cidade.*/
+
+SELECT * FROM Funcionario
+ORDER BY Cidade
+
+/*9) Liste os funcionários que têm salário superior a R$ 1.000,00 ordenados pelo nome completo.*/
+
+SELECT CONCAT(PrimeiroNome,' ',UltimoNome), Salario
+FROM Funcionario
+WHERE Salario > 1000
+
+/*10) Liste a data de nascimento e o primeiro nome dos funcionários ordenados do mais novo para o mais velho.*/
+
+SELECT Data_Nasc, PrimeiroNome 
+FROM Funcionario
+ORDER BY Data_Nasc DESC
+
